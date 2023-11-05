@@ -1,3 +1,6 @@
+-- settings -----------------------------------------------
+vim.opt.number = true
+
 -- plugin manager lazy ------------------------------------
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
@@ -32,11 +35,19 @@ require("lazy").setup({
 	{'hrsh7th/cmp-nvim-lsp-document-symbol', event = 'InsertEnter'},
 	{'hrsh7th/cmp-calc', event = 'InsertEnter'},
 	{'onsails/lspkind.nvim', event = 'InsertEnter'},
+	{
+		'nvim-lualine/lualine.nvim',
+		dependencies = { 'nvim-tree/nvim-web-devicons' }
+	},
+	{'Mofiqul/vscode.nvim'},
+	-- {'kihachi2000/yash.nvim'},
 })
 
-
+-- settings -----------------------------------------------
 -- mini
 require("mini.comment").setup()
+require("mini.indentscope").setup()
+-- require("mini.colors").setup()
 
 -- telescope
 local builtin = require('telescope.builtin')
@@ -54,7 +65,7 @@ vim.api.nvim_set_keymap(
   { noremap = true }
 )
 
--- lsp ----------------------------------------------------
+-- lsp
 local autocmd = vim.api.nvim_create_autocmd
 autocmd("FileType", {
     pattern = "go",
@@ -95,7 +106,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
 })
 
 
--- cmp ----------------------------------------------------
+-- cmp
 local cmp = require('cmp')
 local lspkind = require('lspkind')
 
@@ -140,3 +151,45 @@ local lspkind = require('lspkind')
 
 
 local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
+
+-- color
+vim.opt.termguicolors = true
+vim.opt.background = 'dark'
+-- local c = require('vscode.colors').get_colors()
+-- require('vscode').setup({
+--     -- Alternatively set style in setup
+--     -- style = 'light'
+--
+--     -- Enable transparent background
+--     transparent = true,
+--
+--     -- Enable italic comment
+--     italic_comments = true,
+--
+--     -- Disable nvim-tree background color
+--     disable_nvimtree_bg = true,
+--
+--     -- Override colors (see ./lua/vscode/colors.lua)
+--     -- color_overrides = {
+--     --     vscLineNumber = '#FFFFFF',
+--     -- },
+--
+--     -- Override highlight groups (see ./lua/vscode/theme.lua)
+--     group_overrides = {
+--         -- this supports the same val table as vim.api.nvim_set_hl
+--         -- use colors from this colorscheme by requiring vscode.colors!
+--         Cursor = { fg=c.vscDarkBlue, bg=c.vscLightGreen, bold=true },
+--     }
+-- })
+require('vscode').load()
+
+-- vim.cmd("colorscheme yash")
+
+-- lualine
+require('lualine').setup({
+	options = {
+		theme = 'auto',
+	}
+})
+
