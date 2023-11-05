@@ -82,6 +82,20 @@ autocmd("FileType", {
         vim.lsp.buf_attach_client(0, client)
     end
 })
+-- autocmd("FileType", {
+--     pattern = "jl",
+--     callback = function()
+--         -- local root_dir = vim.fs.dirname(
+--         --     vim.fs.find({ 'Project.toml', '.git' }, { upward = true })[1]
+--         -- )
+--         local client = vim.lsp.start({
+--             name = 'juliaLanguageServer',
+--             cmd = { 'julia -e "using LanguageServer; runserver()"' },
+--             -- root_dir = root_dir,
+--         })
+--         vim.lsp.buf_attach_client(0, client)
+--     end
+-- })
 
 
 local lspopts = { noremap=true, silent=true }
@@ -191,6 +205,9 @@ require('vscode').load()
 require('lualine').setup({
 	options = {
 		theme = 'auto',
-	}
+	},
+	sections = {
+		lualine_c = {'filename' ,"vim.lsp.get_active_clients()[1].name" }
+	},
 })
 
