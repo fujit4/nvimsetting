@@ -47,6 +47,7 @@ require("lazy").setup({
 -- mini
 require("mini.comment").setup()
 require("mini.indentscope").setup()
+require("mini.surround").setup()
 -- require("mini.colors").setup()
 
 -- telescope
