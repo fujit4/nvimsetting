@@ -1,5 +1,6 @@
 -- settings -----------------------------------------------
 vim.opt.number = true
+vim.opt.tabstop = 4
 
 -- plugin manager lazy ------------------------------------
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
@@ -40,13 +41,13 @@ require("lazy").setup({
 		dependencies = { 'nvim-tree/nvim-web-devicons' }
 	},
 	{'Mofiqul/vscode.nvim'},
+	{"lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {}},
 	-- {'kihachi2000/yash.nvim'},
 })
 
--- settings -----------------------------------------------
 -- mini
 require("mini.comment").setup()
-require("mini.indentscope").setup()
+-- require("mini.indentscope").setup()
 require("mini.surround").setup()
 -- require("mini.colors").setup()
 
@@ -191,11 +192,11 @@ vim.opt.background = 'dark'
 --     -- },
 --
 --     -- Override highlight groups (see ./lua/vscode/theme.lua)
---     group_overrides = {
---         -- this supports the same val table as vim.api.nvim_set_hl
---         -- use colors from this colorscheme by requiring vscode.colors!
---         Cursor = { fg=c.vscDarkBlue, bg=c.vscLightGreen, bold=true },
---     }
+    -- group_overrides = {
+        -- this supports the same val table as vim.api.nvim_set_hl
+        -- use colors from this colorscheme by requiring vscode.colors!
+        -- Cursor = { fg=c.vscDarkBlue, bg=c.vscLightGreen, bold=true },
+    -- }
 -- })
 require('vscode').load()
 
@@ -211,3 +212,5 @@ require('lualine').setup({
 	},
 })
 
+-- indent-blankline
+require("ibl").setup()
