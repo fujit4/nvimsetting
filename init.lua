@@ -1,6 +1,7 @@
 -- settings -----------------------------------------------
 vim.opt.number = true
 vim.opt.tabstop = 4
+vim.opt.shiftwidth = 4
 
 -- plugin manager lazy ------------------------------------
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
