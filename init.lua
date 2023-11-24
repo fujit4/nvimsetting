@@ -2,7 +2,6 @@
 vim.opt.number = true
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
-
 -- plugin manager lazy ------------------------------------
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
@@ -44,6 +43,7 @@ require("lazy").setup({
 	{'Mofiqul/vscode.nvim'},
 	{"lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {}},
 	-- {'kihachi2000/yash.nvim'},
+	{'windwp/nvim-autopairs',  event = "InsertEnter",opts = {}},
 })
 
 -- mini
