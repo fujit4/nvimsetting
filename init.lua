@@ -29,6 +29,7 @@ require("lazy").setup({
 		"nvim-telescope/telescope-file-browser.nvim",
 		dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
 	},
+	{ "neovim/nvim-lspconfig"},
 	{'hrsh7th/nvim-cmp', event = 'InsertEnter, CmdlineEnter'},
 	{'hrsh7th/cmp-nvim-lsp', event = 'InsertEnter'}, 
 	{'hrsh7th/cmp-buffer', event = 'InsertEnter'},
@@ -67,23 +68,26 @@ vim.api.nvim_set_keymap(
   ":Telescope file_browser<CR>",
   { noremap = true }
 )
+-- lsp by nvim-lspconfig
+local lspconfig = require('lspconfig')
+lspconfig.gopls.setup {}
 
--- lsp
-local autocmd = vim.api.nvim_create_autocmd
-autocmd("FileType", {
-    pattern = "go",
-    callback = function()
-        local root_dir = vim.fs.dirname(
-            vim.fs.find({ 'go.mod', 'go.work', '.git' }, { upward = true })[1]
-        )
-        local client = vim.lsp.start({
-            name = 'gopls',
-            cmd = { 'gopls' },
-            root_dir = root_dir,
-        })
-        vim.lsp.buf_attach_client(0, client)
-    end
-})
+-- lsp by my self
+-- local autocmd = vim.api.nvim_create_autocmd
+-- autocmd("FileType", {
+--     pattern = "go",
+--     callback = function()
+--         local root_dir = vim.fs.dirname(
+--             vim.fs.find({ 'go.mod', 'go.work', '.git' }, { upward = true })[1]
+--         )
+--         local client = vim.lsp.start({
+--             name = 'gopls',
+--             cmd = { 'gopls' },
+--             root_dir = root_dir,
+--         })
+--         vim.lsp.buf_attach_client(0, client)
+--     end
+-- })
 -- autocmd("FileType", {
 --     pattern = "jl",
 --     callback = function()
@@ -100,15 +104,16 @@ autocmd("FileType", {
 -- })
 
 
-local lspopts = { noremap=true, silent=true }
-vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, lspopts)
+-- local lspopts = { noremap=true, silent=true }
+-- vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, lspopts)
+--
 
 vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(ev)
     local opts = {buffer = ev.buf}
     vim.bo[ev.buf].formatexpr = nil
     vim.bo[ev.buf].omnifunc = nil
-    vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = ev.buf }) 
+    vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = ev.buf })
     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
     vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
@@ -121,7 +126,28 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end, opts)
   end,
 })
-
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = "*.go",
+  callback = function()
+    local params = vim.lsp.util.make_range_params()
+    params.context = {only = {"source.organizeImports"}}
+    -- buf_request_sync defaults to a 1000ms timeout. Depending on your
+    -- machine and codebase, you may want longer. Add an additional
+    -- argument after params if you find that you have to write the file
+    -- twice for changes to be saved.
+    -- E.g., vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, 3000)
+    local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params)
+    for cid, res in pairs(result or {}) do
+      for _, r in pairs(res.result or {}) do
+        if r.edit then
+          local enc = (vim.lsp.get_client_by_id(cid) or {}).offset_encoding or "utf-16"
+          vim.lsp.util.apply_workspace_edit(r.edit, enc)
+        end
+      end
+    end
+    vim.lsp.buf.format({async = false})
+  end
+})
 
 -- cmp
 local cmp = require('cmp')
