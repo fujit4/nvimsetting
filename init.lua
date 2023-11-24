@@ -72,7 +72,8 @@ vim.api.nvim_set_keymap(
 local lspconfig = require('lspconfig')
 lspconfig.gopls.setup {}
 
--- lsp by my self
+-- lsp by my self. 
+-- lspconfigを使わない場合は`autocmd("FileType")`で下記のような記述をしてlspを開始しattachしてあげればOK。
 -- local autocmd = vim.api.nvim_create_autocmd
 -- autocmd("FileType", {
 --     pattern = "go",
@@ -108,6 +109,7 @@ lspconfig.gopls.setup {}
 -- vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, lspopts)
 --
 
+-- key mapping
 vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(ev)
     local opts = {buffer = ev.buf}
@@ -126,6 +128,9 @@ vim.api.nvim_create_autocmd('LspAttach', {
     end, opts)
   end,
 })
+
+-- imports and formatting
+-- https://github.com/golang/tools/blob/master/gopls/doc/vim.md#imports-and-formatting
 vim.api.nvim_create_autocmd("BufWritePre", {
   pattern = "*.go",
   callback = function()
