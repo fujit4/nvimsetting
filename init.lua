@@ -2,6 +2,9 @@
 vim.opt.number = true
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
+
+
+
 -- plugin manager lazy ------------------------------------
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
@@ -31,7 +34,7 @@ require("lazy").setup({
 	},
 	{ "neovim/nvim-lspconfig"},
 	{'hrsh7th/nvim-cmp', event = 'InsertEnter, CmdlineEnter'},
-	{'hrsh7th/cmp-nvim-lsp', event = 'InsertEnter'}, 
+	{'hrsh7th/cmp-nvim-lsp', event = 'InsertEnter'},
 	{'hrsh7th/cmp-buffer', event = 'InsertEnter'},
 	{'hrsh7th/cmp-nvim-lsp-signature-help', event = 'InsertEnter'},
 	{'hrsh7th/cmp-nvim-lsp-document-symbol', event = 'InsertEnter'},
@@ -71,6 +74,28 @@ vim.api.nvim_set_keymap(
 -- lsp by nvim-lspconfig
 local lspconfig = require('lspconfig')
 lspconfig.gopls.setup {}
+lspconfig.lua_ls.setup({
+  settings = {
+    Lua = {
+      runtime = {
+        version = "LuaJIT",
+        pathStrict = true,
+        path = { "?.lua", "?/init.lua" },
+      },
+      workspace = {
+        library = vim.list_extend(vim.api.nvim_get_runtime_file("lua", true), {
+          "${3rd}/luv/library",
+          "${3rd}/busted/library",
+          "${3rd}/luassert/library",
+        }),
+        checkThirdParty = "Disable",
+      },
+    },
+  },
+})
+
+local lspopts = { noremap=true, silent=true }
+vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, lspopts)
 
 -- lsp by my self. 
 -- lspconfigを使わない場合は`autocmd("FileType")`で下記のような記述をしてlspを開始しattachしてあげればOK。
@@ -121,7 +146,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
     vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, opts)
     vim.keymap.set('n', 'gr', vim.lsp.buf.references, opts)
     vim.keymap.set('n', '<C-k>', vim.lsp.buf.signature_help, opts)
-    vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, opt)
+    vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, opts)
     vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, opts)
     vim.keymap.set('n', '<space>f', function()
       vim.lsp.buf.format { async = true }
