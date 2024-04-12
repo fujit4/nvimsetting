@@ -23,7 +23,6 @@ jobs:
       - run: pwd
       - run: mkdir -p .config/nvim
       - run: cp /home/runner/work/nvimsetting/nvimsetting/init.lua .config/nvim/
-      - run: cat .config/init.lua
       - run: /opt/nvim-linux64/bin/nvim --headless "+Lazy! sync" +qa
       - run: /opt/nvim-linux64/bin/nvim -v
       - run: ls -R .config/
