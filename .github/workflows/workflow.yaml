@@ -20,5 +20,5 @@ jobs:
       - run: sudo rm -rf /opt/nvim
       - run: sudo tar -C /opt -xzf nvim-linux64.tar.gz
       - run: export PATH="$PATH:/opt/nvim-linux64/bin"
-      - run: nvim -v
+      - run: /opt/nvim-linux64/bin/nvim -v
 
