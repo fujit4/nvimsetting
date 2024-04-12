@@ -1,6 +1,6 @@
 `init.lua`格納パスへの移動
 ```powershell
-dcd $env:LOCALAPPDATA\nvim
+cd $env:LOCALAPPDATA\nvim
 ```
 
 前提

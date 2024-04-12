@@ -1,7 +1,6 @@
 -- settings -----------------------------------------------
 vim.opt.number = true
-vim.opt.tabstop = 4
-vim.opt.shiftwidth = 4
+-- vim.opt.shiftwidth = 4
 
 
 
@@ -52,9 +51,7 @@ require("lazy").setup({
 
 -- mini
 require("mini.comment").setup()
--- require("mini.indentscope").setup()
 require("mini.surround").setup()
--- require("mini.colors").setup()
 
 -- telescope
 local builtin = require('telescope.builtin')
@@ -71,6 +68,7 @@ vim.api.nvim_set_keymap(
   ":Telescope file_browser<CR>",
   { noremap = true }
 )
+
 -- lsp by nvim-lspconfig
 local lspconfig = require('lspconfig')
 lspconfig.gopls.setup {}
@@ -97,44 +95,6 @@ lspconfig.lua_ls.setup({
 local lspopts = { noremap=true, silent=true }
 vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, lspopts)
 
--- lsp by my self. 
--- lspconfigを使わない場合は`autocmd("FileType")`で下記のような記述をしてlspを開始しattachしてあげればOK。
--- local autocmd = vim.api.nvim_create_autocmd
--- autocmd("FileType", {
---     pattern = "go",
---     callback = function()
---         local root_dir = vim.fs.dirname(
---             vim.fs.find({ 'go.mod', 'go.work', '.git' }, { upward = true })[1]
---         )
---         local client = vim.lsp.start({
---             name = 'gopls',
---             cmd = { 'gopls' },
---             root_dir = root_dir,
---         })
---         vim.lsp.buf_attach_client(0, client)
---     end
--- })
--- autocmd("FileType", {
---     pattern = "jl",
---     callback = function()
---         -- local root_dir = vim.fs.dirname(
---         --     vim.fs.find({ 'Project.toml', '.git' }, { upward = true })[1]
---         -- )
---         local client = vim.lsp.start({
---             name = 'juliaLanguageServer',
---             cmd = { 'julia -e "using LanguageServer; runserver()"' },
---             -- root_dir = root_dir,
---         })
---         vim.lsp.buf_attach_client(0, client)
---     end
--- })
-
-
--- local lspopts = { noremap=true, silent=true }
--- vim.keymap.set('n', '<space>e', vim.diagnostic.open_float, lspopts)
---
-
--- key mapping
 vim.api.nvim_create_autocmd('LspAttach', {
   callback = function(ev)
     local opts = {buffer = ev.buf}
@@ -229,35 +189,7 @@ local capabilities = require('cmp_nvim_lsp').default_capabilities()
 -- color
 vim.opt.termguicolors = true
 vim.opt.background = 'dark'
--- local c = require('vscode.colors').get_colors()
--- require('vscode').setup({
---     -- Alternatively set style in setup
---     -- style = 'light'
---
---     -- Enable transparent background
---     transparent = true,
---
---     -- Enable italic comment
---     italic_comments = true,
---
---     -- Disable nvim-tree background color
---     disable_nvimtree_bg = true,
---
---     -- Override colors (see ./lua/vscode/colors.lua)
---     -- color_overrides = {
---     --     vscLineNumber = '#FFFFFF',
---     -- },
---
---     -- Override highlight groups (see ./lua/vscode/theme.lua)
-    -- group_overrides = {
-        -- this supports the same val table as vim.api.nvim_set_hl
-        -- use colors from this colorscheme by requiring vscode.colors!
-        -- Cursor = { fg=c.vscDarkBlue, bg=c.vscLightGreen, bold=true },
-    -- }
--- })
 require('vscode').load()
-
--- vim.cmd("colorscheme yash")
 
 -- lualine
 require('lualine').setup({
