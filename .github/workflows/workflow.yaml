@@ -26,6 +26,6 @@ jobs:
       - run: cp /home/runner/work/nvimsetting/nvimsetting/init.lua ~/.config/nvim/
       - run: /opt/nvim-linux64/bin/nvim --headless "+Lazy! sync" +qa
       - run: /opt/nvim-linux64/bin/nvim -v
-      - run: ls -aR ~/.local/share/nvim/
-      - run: ls -aR ~/.local/state/nvim/
+      - run: zip -r local_share_nvim.zip ~/.local/share/nvim/
+      - run: zip -r local_state_nvim.zip ~/.local/state/nvim/
 
