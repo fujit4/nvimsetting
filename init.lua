@@ -33,7 +33,8 @@ require("lazy").setup({
 		dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
 	},
 	{ "neovim/nvim-lspconfig"},
-	{'hrsh7th/nvim-cmp', event = 'InsertEnter, CmdlineEnter'},
+	-- {'hrsh7th/nvim-cmp', event = 'InsertEnter, CmdlineEnter'},
+	{'hrsh7th/nvim-cmp', event = 'InsertEnter'},
 	{'hrsh7th/cmp-nvim-lsp', event = 'InsertEnter'},
 	{'hrsh7th/cmp-buffer', event = 'InsertEnter'},
 	{'hrsh7th/cmp-nvim-lsp-signature-help', event = 'InsertEnter'},
