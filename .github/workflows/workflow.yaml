@@ -16,16 +16,30 @@ jobs:
         run: |
           ls ${{ github.workspace }}
       - run: git --version
-      - run: echo "🍏 This job's status is ${{ job.status }}."
-      - run: curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz
-      - run: sudo rm -rf /opt/nvim
-      - run: sudo tar -C /opt -xzf nvim-linux64.tar.gz
-      - run: export PATH="$PATH:/opt/nvim-linux64/bin"
-      - run: pwd
-      - run: mkdir -p ~/.config/nvim
-      - run: cp /home/runner/work/nvimsetting/nvimsetting/init.lua ~/.config/nvim/
-      - run: /opt/nvim-linux64/bin/nvim --headless "+Lazy! sync" +qa
-      - run: /opt/nvim-linux64/bin/nvim -v
-      - run: zip -r local_share_nvim.zip ~/.local/share/nvim/
-      - run: zip -r local_state_nvim.zip ~/.local/state/nvim/
-
+      - name: Install Neovim
+        run: |
+          curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz
+          sudo rm -rf /opt/nvim
+          sudo tar -C /opt -xzf nvim-linux64.tar.gz
+          export PATH="$PATH:/opt/nvim-linux64/bin"
+      - name: Config Neovim
+        run: |
+          mkdir -p ~/.config/nvim
+          cp /home/runner/work/nvimsetting/nvimsetting/init.lua ~/.config/nvim/
+      - name: Install Neovim Plugins
+        run: |
+          /opt/nvim-linux64/bin/nvim --headless "+Lazy! sync" +qa
+          /opt/nvim-linux64/bin/nvim -v
+      - name: Archive modules
+        run: |
+          zip -r local_share_nvim.zip ~/.local/share/nvim/
+          zip -r local_state_nvim.zip ~/.local/state/nvim/
+          zip -r config_nvim.zip ~/.config/nvim/
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            local_share_nvim.zip
+            local_state_nvim.zip
+            config_nvim.zip
