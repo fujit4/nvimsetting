@@ -1,7 +1,14 @@
-`init.lua`格納パスへの移動
+`init.lua`格納パス
 ```powershell
-cd $env:LOCALAPPDATA\nvim
+$env:LOCALAPPDATA\nvim
 ```
+
+pluginの格納パス
+```powershell
+$env:LOCALAPPDATA\nvim-data\
+```
+上記のlazyフォルダにプラグインがインストールされる
+
 
 前提
 * fdコマンドのインストール
