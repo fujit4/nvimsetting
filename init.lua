@@ -24,56 +24,45 @@ vim.g.mapleader = " " -- Make sure to set `mapleader` before lazy so your mappin
 -- plugins ------------------------------------------------
 require("lazy").setup({
 	{ 'echasnovski/mini.nvim', version = '*' },
-	{
-		'nvim-telescope/telescope.nvim', tag = '0.1.4',
-		dependencies = { 'nvim-lua/plenary.nvim' }
-	},
+	{ 'nvim-telescope/telescope.nvim', tag = '0.1.4', dependencies = { 'nvim-lua/plenary.nvim' } },
 	{
 		"nvim-telescope/telescope-file-browser.nvim",
 		dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" }
 	},
-	{ "neovim/nvim-lspconfig"},
-	-- {'hrsh7th/nvim-cmp', event = 'InsertEnter, CmdlineEnter'},
+	{ "neovim/nvim-lspconfig" },
 	{'hrsh7th/nvim-cmp', event = 'InsertEnter'},
 	{'hrsh7th/cmp-nvim-lsp', event = 'InsertEnter'},
 	{'hrsh7th/cmp-buffer', event = 'InsertEnter'},
+	{'hrsh7th/cmp-path', event = 'InsertEnter'},
 	{'hrsh7th/cmp-nvim-lsp-signature-help', event = 'InsertEnter'},
 	{'hrsh7th/cmp-nvim-lsp-document-symbol', event = 'InsertEnter'},
 	{'hrsh7th/cmp-calc', event = 'InsertEnter'},
 	{'onsails/lspkind.nvim', event = 'InsertEnter'},
-	{
-		'nvim-lualine/lualine.nvim',
-		dependencies = { 'nvim-tree/nvim-web-devicons' }
-	},
+	{ 'nvim-lualine/lualine.nvim', dependencies = { 'nvim-tree/nvim-web-devicons' } },
 	{'Mofiqul/vscode.nvim'},
 	{"lukas-reineke/indent-blankline.nvim", main = "ibl", opts = {}},
 	-- {'kihachi2000/yash.nvim'},
-	{'windwp/nvim-autopairs',  event = "InsertEnter",opts = {}},
+	{ 'windwp/nvim-autopairs', event = "InsertEnter", opts = {} },
+	{
+		'Wansmer/treesj',
+		keys = { '<space>m', '<space>j', '<space>s' },
+		dependencies = { 'nvim-treesitter/nvim-treesitter' },
+		config = function()
+			require('treesj').setup({--[[ your config ]]})
+		end,
+	},
+	{'ixru/nvim-markdown'},
 })
 
 -- mini
 require("mini.comment").setup()
--- require("mini.surround").setup()
 
--- telescope
--- local builtin = require('telescope.builtin')
--- vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
--- vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
--- vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
--- vim.keymap.set('n', '<leader>fh', builtin.help_tags, {})
-
--- telescope file browser
--- require("telescope").load_extension "file_browser"
--- vim.api.nvim_set_keymap(
---   "n",
---   "<space>fb",
---   ":Telescope file_browser<CR>",
---   { noremap = true }
--- )
 
 -- lsp by nvim-lspconfig
 local lspconfig = require('lspconfig')
+-- go
 lspconfig.gopls.setup {}
+-- lua
 lspconfig.lua_ls.setup({
   settings = {
     Lua = {
